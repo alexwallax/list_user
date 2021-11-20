@@ -5,9 +5,11 @@
 
     if(!empty($_POST['id'])) { //verifica se o id esta vazio 
         $nome = $_POST['nome'];
+        $email = $_POST['email'];
         $id = $_POST['id'];
 
-        $contato->editar($nome, $id);
-
+        if(!empty($email)) {
+            $contato->editar($nome, $email, $id);
+        }
         header("Location: index.php"); //redirecionando para o index.php
     }

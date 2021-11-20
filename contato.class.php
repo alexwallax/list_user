@@ -69,12 +69,19 @@
         }
 
         /***********************************************UPDATE*****************************************************/
-        public function editar($nome, $id) {
-            $sql = "UPDATE contatos SET nome = :nome WHERE id = :id";//atualizar o nome onde o id for igual ao do banco
-            $sql = $this->pdo->prepare($sql);
-            $sql->bindValue(':nome', $nome);
-            $sql->bindValue(':id', $id);
-            $sql->execute();
+        public function editar($nome, $email, $id) {
+            if($this->existeEmail($email) == false) {//verifica se email existe
+                $sql = "UPDATE contatos SET nome = :nome, email = :email WHERE id = :id";//atualizar o nome onde o id for igual ao do banco
+                $sql = $this->pdo->prepare($sql);
+                $sql->bindValue(':nome', $nome);
+                $sql->bindValue(':email', $email);
+                $sql->bindValue(':id', $id);
+                $sql->execute();
+
+                return true;
+            } else {
+                return false;
+            }
         }
 
 
