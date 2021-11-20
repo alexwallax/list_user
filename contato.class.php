@@ -25,7 +25,7 @@
             }
         }
         /*************************************************READ***************************************************/
-        //criando read verificar se tem cadastro (apenas um)
+        //criando read verificar se tem cadastro (apenas um) baseado no email
         public function getNome($email) {
             $sql = "SELECT nome FROM contatos WHERE email = :email";// busca "nome" da tabela contatos
             $sql = $this->pdo->prepare($sql);
@@ -41,6 +41,21 @@
             }
         }
 
+        //criando read verificar se tem cadastro (apenas um) baseado no id
+        public function getInfo($id) {
+            $sql = "SELECT * FROM contatos WHERE id = :id";//busca todos os registros da tabela contatos
+            $sql = $this->pdo->prepare($sql);//não usa o prepare porque não tem parametros no getAll()
+            $sql->bindValue(':id', $id);
+            $sql->execute();
+
+            if($sql->rowCount() > 0) {
+                return $sql->fetch();//retorna todos os registros
+            } else {
+                return array();
+            }
+        }
+
+
         //criando read verificar se tem cadastros (todos)
         public function getAll() {
             $sql = "SELECT * FROM contatos";//busca todos os registros da tabela contatos
@@ -54,18 +69,12 @@
         }
 
         /***********************************************UPDATE*****************************************************/
-        public function editar($nome, $email) {
-            if($this->existeEmail($email)) {
-                $sql = "UPDATE contatos SET nome = :nome WHERE email = :email";//atualizar o nome onde o email for igual ao do banco
-                $sql = $this->pdo->prepare($sql);
-                $sql->bindValue(':nome', $nome);
-                $sql->bindValue(':email', $email);
-                $sql->execute();
-
-                return true;
-            } else {
-                return false;
-            }
+        public function editar($nome, $id) {
+            $sql = "UPDATE contatos SET nome = :nome WHERE id = :id";//atualizar o nome onde o id for igual ao do banco
+            $sql = $this->pdo->prepare($sql);
+            $sql->bindValue(':nome', $nome);
+            $sql->bindValue(':id', $id);
+            $sql->execute();
         }
 
 
